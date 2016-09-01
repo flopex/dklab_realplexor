@@ -149,10 +149,18 @@ void mainloop()
         LOGGER("Switching current user to unprivileged \"" + user + "\"");
         uid_t uid = lexical_cast<uid_t>(ug[0]);
         gid_t gid = lexical_cast<gid_t>(ug[1]);
-        setegid(gid);
-        setgid(gid);
-        seteuid(uid);
-        setuid(uid);
+        if ( setegid(gid) == -1 ) {
+          LOGGER("setegid failed");
+        }
+        if ( setgid(gid) == -1 ) {
+          LOGGER("setgid failed");
+        }
+        if ( seteuid(uid) == -1 ) {
+          LOGGER("seteuid failed");
+        }
+        if ( setuid(uid) == -1 ) {
+          LOGGER("setuid failed");
+        }
     }
 
     Realplexor::Event::mainloop();
